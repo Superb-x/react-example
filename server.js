@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const send = require('koa-send')
 const Router = require('koa-router')
+const httpProxy = require('http-proxy')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
 const config = require('./webpack.dev.config')
@@ -47,6 +48,12 @@ new WebpackDevServer(webpack(config), {
   }
 })
 
+const proxyJs = new httpProxy.createProxyServer({
+  target: `http://localhost:${DEVPORT}/`,
+  changeOrigin: true
+})
+
 router.get('**/*.js(on)?', async function (ctx) {
-  ctx.redirect(`http://localhost:${DEVPORT}/${ctx.path}`)
+  proxyJs.web(ctx.req, ctx.res)
+  ctx.body = ctx.res
 })
