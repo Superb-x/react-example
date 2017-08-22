@@ -1,14 +1,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-
-import '_/styles/index.scss'
-
-class App extends Component {
-    render (){
-        return (
-            <div>Hello, world</div>
-        )
-    }
-}
+import App from './App'
 
 ReactDOM.render(<App />, document.getElementById('root'))
+
+module.hot && module.hot.accept()
